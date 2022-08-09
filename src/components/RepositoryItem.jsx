@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, Image, Dimensions } from "react-native";
+import { View, StyleSheet, Image, Dimensions, Button } from 'react-native';
 import Text from '../components/Text';
+import { openLink } from '../utils/miscellaneous';
 import theme from '../theme';
 
 const formatNumber = (input) => {
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
         paddingTop: 10
     },
     descriptionContainer: {
-        width: Dimensions. get('window'). width - 70,
+        width: Dimensions.get('window').width * 0.8,
     },
     bottomContainer: {
         flexDirection: 'row',
@@ -36,6 +37,9 @@ const styles = StyleSheet.create({
     },
     bottomCell: {
         alignItems: 'center',
+    },
+    githubLinkContainer: {
+        padding: 10
     },
     language: {
         display: 'flex',
@@ -52,15 +56,16 @@ const styles = StyleSheet.create({
   });
   
 
-const RepositoryItem = ({repository}) => {
+const RepositoryItem = ({repository, showGitHub}) => {
+
     return (
-            <View style={styles.container}>
+            <View style={styles.container} testID='repositoryItem'>
                 <View style={styles.topContainer}>
                     <View style={styles.logoContainer}><Image style={styles.logo} source={{ uri: repository.ownerAvatarUrl }} /></View>
                     <View style={styles.topTextContainer}>
-                        <Text color="textPrimary" fontWeight="bold" fontSize="subheading"> {repository.fullName} </Text>
+                        <Text color='textPrimary' fontWeight='bold' fontSize='subheading' > {repository.fullName} </Text>
                         <View style={styles.descriptionContainer}>
-                            <Text color="textSecondary"> {repository.description} </Text>
+                            <Text color='textSecondary'> {repository.description} </Text>
                         </View>
                         <View style={styles.language}>
                             <Text color='white'> {repository.language} </Text>
@@ -69,23 +74,27 @@ const RepositoryItem = ({repository}) => {
                 </View>
                 <View style={styles.bottomContainer}>
                     <View style={styles.bottomCell}>
-                        <Text color="textPrimary" fontWeight="bold" fontSize="subheading">{formatNumber(repository.stargazersCount)}</Text>
+                        <Text color='textPrimary' fontWeight='bold' fontSize='subheading'>{formatNumber(repository.stargazersCount)}</Text>
                         <Text>Stars</Text>
                     </View>
                     <View style={styles.bottomCell}>
-                        <Text color="textPrimary" fontWeight="bold" fontSize="subheading"> {formatNumber(repository.forksCount)}</Text>
+                        <Text color='textPrimary' fontWeight='bold' fontSize='subheading'> {formatNumber(repository.forksCount)}</Text>
                         <Text>Forks</Text>
                     </View>
                     <View style={styles.bottomCell}>
-                        <Text color="textPrimary" fontWeight="bold" fontSize="subheading"> {formatNumber(repository.reviewCount)}</Text>
+                        <Text color='textPrimary' fontWeight='bold' fontSize='subheading'> {formatNumber(repository.reviewCount)}</Text>
                         <Text>Reviews</Text>
                     </View>
                     <View style={styles.bottomCell}>
-                        <Text color="textPrimary" fontWeight="bold" fontSize="subheading"> {formatNumber(repository.ratingAverage)}</Text>
+                        <Text color='textPrimary' fontWeight='bold' fontSize='subheading'> {formatNumber(repository.ratingAverage)}</Text>
                         <Text>Rating</Text>
                     </View>
                 </View>
-        </View>
+                { !showGitHub ? <></> :
+                    <View style={styles.githubLinkContainer}>
+                        <Button color={theme.colors.primary} title='Open in Github' onPress={ () => openLink(repository.url)} />
+                    </View> }
+            </View>
     )
 }
 

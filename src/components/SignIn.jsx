@@ -1,5 +1,5 @@
 import { View, StyleSheet, Button } from 'react-native';
-import { useNavigate } from "react-router-native";
+import { useNavigate } from 'react-router-native';
 import FormikTextInput from './FormikTextInput';
 import { Formik } from 'formik';
 import * as yup from 'yup';
@@ -29,11 +29,11 @@ const styles = StyleSheet.create({
 
 const SignInForm = ({ onSubmit }) => {
     return (
-    <View style={styles.container}>
-        <FormikTextInput name="username" placeholder="Username" testID='usernameField' />
-        <FormikTextInput name="password" placeholder="Password" secureTextEntry={true} />
+    <View style={styles.container} testID='signInForm'>
+        <FormikTextInput name='username' placeholder='Username' testID='username' />
+        <FormikTextInput name='password' placeholder='Password' secureTextEntry={true} testID='password'/>
         <View style={styles.buttonContainer}>
-            <Button color={theme.colors.primary} title="Sign in" onPress={onSubmit} />
+            <Button color={theme.colors.primary} title='Sign in' onPress={onSubmit} testID='submit'/>
         </View>
     </View>
     );
@@ -57,12 +57,18 @@ const SignIn = () => {
       };
       
     return (
+      <SignInContainer onSubmit={onSubmit} />
+  )
+};
+
+export const SignInContainer = ({ onSubmit }) => {
+  return (
     <View>
         <Formik initialValues={{ username: '', password: '' }} onSubmit={onSubmit} validationSchema={validationSchema}>
             {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
         </Formik>
     </View>
   )
-};
+}
 
 export default SignIn;
